@@ -4,13 +4,13 @@ const PLUGIN_ID = 'wildpeaks-three';
 const Loader = require.resolve('./Loader');
 
 class Plugin {
-	apply(compiler){ // eslint-disable-line class-methods-use-this
+	apply(compiler) { // eslint-disable-line class-methods-use-this
 		compiler.hooks.normalModuleFactory.tap(PLUGIN_ID, normalModuleFactory => {
 			normalModuleFactory.hooks.afterResolve.tap(PLUGIN_ID, data => {
-				const {loaders, rawRequest} = data;
-				if (rawRequest.startsWith('three/examples/js/')){
+				const { loaders, rawRequest } = data;
+				if (rawRequest.startsWith('three/examples/js/')) {
 					const exportId = rawRequest.split('/').pop();
-					if (rawRequest === 'three/examples/js/postprocessing/EffectComposer'){
+					if (rawRequest === 'three/examples/js/postprocessing/EffectComposer') {
 						loaders.push({
 							loader: Loader,
 							options: {
@@ -20,7 +20,17 @@ class Plugin {
 								}
 							}
 						});
-					} else if (rawRequest.startsWith('three/examples/js/postprocessing/')){
+					} else if (rawRequest === 'three/examples/js/renderers/CSS3DRenderer') {
+						loaders.push({
+							loader: Loader,
+							options: {
+								exports: {
+									CSS3DRenderer: 'THREE.CSS3DRenderer',
+									CSS3DObject: 'THREE.CSS3DObject'
+								}
+							}
+						});
+					} else if (rawRequest.startsWith('three/examples/js/postprocessing/')) {
 						loaders.push({
 							loader: Loader,
 							options: {
