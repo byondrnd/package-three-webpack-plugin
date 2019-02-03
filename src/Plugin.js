@@ -8,7 +8,7 @@ class Plugin {
 		compiler.hooks.normalModuleFactory.tap(PLUGIN_ID, normalModuleFactory => {
 			normalModuleFactory.hooks.afterResolve.tap(PLUGIN_ID, data => {
 				const { loaders, rawRequest } = data;
-				if (rawRequest.startsWith('three/examples/js/')) {
+				if (rawRequest.startsWith('three/examples/js/') && !rawRequest.startsWith('three/examples/js/nodes')) {
 					const exportId = rawRequest.split('/').pop();
 					if (rawRequest === 'three/examples/js/postprocessing/EffectComposer') {
 						loaders.push({
